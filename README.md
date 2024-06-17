@@ -31,6 +31,8 @@ The project architecture consists of the following main components:
 
 - To see all available options run `make help`
 
+- **Consider documenting possible configurations (variables) for your developers: the required and the optional**
+
 ## Relevant URLs
 
 - **argocd UI:** `argocd.<workspace>.<domain>`
