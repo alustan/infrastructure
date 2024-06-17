@@ -16,7 +16,7 @@ The project architecture consists of the following main components:
 
 - **Gitops Bridge**: Share cloud matadata with kubernetes resources/manifest using argocd cluster secret.
 
-- **Project is modular and extensible: Fork and add as much services as you need**
+- **Project is modular and extensible**
 
 
 ## setup
@@ -33,19 +33,19 @@ The project architecture consists of the following main components:
 
 ## Relevant URLs
 
-- **argocd UI:** argocd.workspace.domain
+- **argocd UI:** `argocd.<workspace>.<domain>`
 
-- **Grafana UI:** grafana.workspace.domain
+- **Grafana UI:** `grafana.<workspace>.<domain>`
 
-- **Prometheus UI:** prometheus.workspace.domain
+- **Prometheus UI:** `prometheus.<workspace>.<domain>`
 
-- **Kubecost UI:** kubecost.workspace.domain
+- **Kubecost UI:** `kubecost.<workspace>.<domain>`
 
-- **Argo rollout Dashboard:** kubectl argo rollouts dashboard -n <namespace>; Then visit `localhost:3100`
+- **Argo rollout Dashboard:** `kubectl argo rollouts dashboard -n <namespace>`; Then visit `localhost:3100`
 
 - **Robusta UI:** [robusta](https://home.robusta.dev/)
 
-- **To list all relevant URLs** terraform output -raw retrieve_creds; Execute the output
+- **To list all relevant URLs** `terraform output -raw retrieve_creds`; Execute the output
 
 
 **This is one of multiple projects that aims to setup a functional platform for seemless app deployment with less technical overhead**
