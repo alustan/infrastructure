@@ -81,6 +81,7 @@ module "database" {
   addons_atlas           = var.enable_atlas
   addons_cloudwatch_metrics = var.enable_cloudwatch
   addons_metacontroller    = var.enable_metacontroller
+  addons_metrics_server    = var.enable_metrics_server
 
 
 

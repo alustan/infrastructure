@@ -274,7 +274,11 @@ variable "addons_metacontroller" {
   default = "true"
 }
 
-
+variable "addons_metrics_server" {
+  description = "enable metrics server addon"
+  type        = string
+  default = "true"
+}
 
 
 

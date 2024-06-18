@@ -22,6 +22,7 @@ locals {
     enable_robusta                         = var.addons_robusta == "true" ? true : false
     enable_atlas                           = var.addons_atlas == "true" ? true : false
     enable_metacontroller                  = var.addons_metacontroller == "true" ? true : false
+    enable_metrics_server                 = var.addons_metrics_server == "true" ? true : false
   
     
    
