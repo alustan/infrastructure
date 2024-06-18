@@ -74,7 +74,6 @@ module "database" {
   addons_external_dns    = var.enable_external_dns
   addons_grafana         = var.enable_grafana
   addons_loki            = var.enable_loki
-  addons_autoscaler      = var.enable_pod_autoscaler
   addons_prometheus       = var.enable_prometheus
   addons_kyverno         = var.enable_kyverno
   addons_kubecost        = var.enable_kubecost

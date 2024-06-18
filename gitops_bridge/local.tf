@@ -16,7 +16,6 @@ locals {
     enable_external_dns                    = var.addons_external_dns == "true" ? true : false
     enable_grafana                         = var.addons_grafana == "true" ? true : false
     enable_loki_stack                      = var.addons_loki == "true" ? true : false
-    enable_pod_autoscaler                  = var.addons_autoscaler == "true" ? true : false
     enable_prometheus                      = var.addons_prometheus == "true" ? true : false
     enable_kyverno                         = var.addons_kyverno == "true" ? true : false
     enable_kubecost                        = var.addons_kubecost == "true" ? true : false
