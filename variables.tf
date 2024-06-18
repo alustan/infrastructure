@@ -212,11 +212,7 @@ variable "enable_loki" {
   type        = string
   default = "true"
 }
-variable "enable_pod_autoscaler" {
-  description = "enable autoscaler addon"
-  type        = string
-  default = "true"
-}
+
 variable "enable_prometheus" {
   description = "enable prometheus addon"
   type        = string

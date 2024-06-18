@@ -235,11 +235,7 @@ variable "addons_loki" {
   type        = string
   default = "true"
 }
-variable "addons_autoscaler" {
-  description = "enable autoscaler addon"
-  type        = string
-  default = "true"
-}
+
 variable "addons_prometheus" {
   description = "enable prometheus addon"
   type        = string
