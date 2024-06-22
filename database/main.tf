@@ -6,9 +6,9 @@ module "aws_db" {
   db_size     = var.db_size
   db_enable_multi_az     = var.db_enable_multi_az
   vpc_cidr     = var.vpc_cidr
-  secret_creds     = var.secret_creds
+  secret_store     = var.secret_store
  
- }
+}
 
 # Define locals to handle conditional outputs
 locals {

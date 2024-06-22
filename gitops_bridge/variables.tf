@@ -62,7 +62,7 @@ variable "db_engine" {
   type        = string
   default  = "postgres"
 }
-variable "secret_creds" {
+variable "secret_store" {
   description = "aws secret manager store"
   type        = string
 }
@@ -173,12 +173,7 @@ variable "cluster_bootstrap" {
   default     = "false"
 }
 
-variable "store_name" {
-  description = "aws store for storing relevant urls and creds needed by developers"
-  type        = string
- }
-
- variable "argocd_random_password" {
+variable "argocd_random_password" {
   description = "argocd random password"
   type        = string
  }

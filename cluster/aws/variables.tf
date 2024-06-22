@@ -8,7 +8,7 @@ variable "domain_name" {
   type        = string
 }
 
-variable "secret_creds" {
+variable "secret_store" {
   description = "aws secret manager store"
   type        = string
 }

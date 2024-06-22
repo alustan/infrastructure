@@ -6,7 +6,7 @@ module "aws_cluster" {
   source        = "./aws"
   region     = var.region
   domain_name     = var.domain_name
-  secret_creds     = var.secret_creds
+  secret_store     = var.secret_store
   cluster_nodesize     = var.cluster_nodesize
   vpc_cidr     = var.vpc_cidr
   kubernetes_version     = var.kubernetes_version

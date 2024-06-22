@@ -16,6 +16,11 @@ workspace=$(echo "${TF_VAR_workspace:-$(get_tfvar "workspace")}" | tr -d '\r')
 region=$(echo "${TF_VAR_region:-$(get_tfvar "region")}" | tr -d '\r')
 vpc_cidr=$(echo "${TF_VAR_vpc_cidr:-$(get_tfvar "vpc_cidr")}" | tr -d '\r')
 
+# Validate required variables
+: "${workspace:?Need to set WORKSPACE in environment or terraform.tfvars}"
+: "${region:?Need to set REGION in environment or terraform.tfvars}"
+: "${vpc_cidr:?Need to set VPC_CIDR in environment or terraform.tfvars}"
+
 # Function to check if an S3 bucket exists
 check_s3_bucket_exists() {
   aws s3api head-bucket --bucket "$1" --region "$region" 2>/dev/null
@@ -79,10 +84,7 @@ else
   extract_backend_outputs
 fi
 
-# Validate required variables
-: "${workspace:?Need to set WORKSPACE in environment or terraform.tfvars}"
-: "${region:?Need to set REGION in environment or terraform.tfvars}"
-: "${vpc_cidr:?Need to set VPC_CIDR in environment or terraform.tfvars}"
+
 
 # Check if the provided VPC CIDR is already in use
 check_vpc_cidr "$vpc_cidr" "$region"

@@ -1,10 +1,10 @@
 # Targets
-.PHONY: all setup deploy destroy store-secrets  help
+.PHONY: all setup deploy destroy store-secrets retrieve-creds  help
 
 all: deploy
 
 setup:
-	./scripts/setup.sh
+	./setup/setup.sh
 
 deploy:
 	./deploy.sh
@@ -14,8 +14,10 @@ destroy:
 
 
 store-secrets:
-	./scripts/create_aws_secret.sh
+	./setup/create_aws_secret.sh
 
+retrieve-creds:
+	./setup/create_aws_secret.sh
 
 
 ## Display help message

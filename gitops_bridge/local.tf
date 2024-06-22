@@ -45,8 +45,8 @@ locals {
       service_account_role_arn    =  var.service_account_role_arn
 
       db_engine                   = var.db_engine
-      secret_creds                = var.secret_creds
-      store_name                  = var.store_name
+      secret_store                = var.secret_store
+     
       slack_channel               = var.slack_channel
       git_owner                   = var.git_owner
       kubernetes_version          = var.kubernetes_version 

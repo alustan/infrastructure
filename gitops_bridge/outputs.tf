@@ -1,35 +1,14 @@
 
-output "configure_kubectl" {
-  description = "Configure kubectl: make sure you're logged in with the correct AWS profile and run the following command to update your kubeconfig"
-  value       = <<-EOT
-    export KUBECONFIG="/tmp/${var.aws_cluster_name}"
-    aws eks --region ${var.region} update-kubeconfig --name ${var.aws_cluster_name}
-  EOT
-}
-
-output "configure_argocd" {
-  description = "Terminal Setup"
-  value       = <<-EOT
-    export KUBECONFIG="/tmp/${var.aws_cluster_name}"
-    aws eks --region ${var.region} update-kubeconfig --name ${var.aws_cluster_name}
-    export ARGOCD_OPTS="--port-forward --port-forward-namespace argocd --grpc-web"
-    kubectl config set-context --current --namespace argocd
-    argocd login --port-forward --username admin --password $(aws secretsmanager get-secret-value --secret-id argocd --region ${var.region} --output json | jq -r .SecretString)
-    echo "ArgoCD Username: admin"
-    echo "ArgoCD Password: $(aws secretsmanager get-secret-value --secret-id argocd-${terraform.workspace} --region ${var.region} --output json | jq -r .SecretString)"
-    echo Port Forward: http://localhost:8080
-    kubectl port-forward -n argocd svc/argo-cd-argocd-server 8080:80
-    EOT
-}
-
-output "access_argocd" {
+output "retrive_creds" {
   description = "ArgoCD Access"
   value       = <<-EOT
     export KUBECONFIG="/tmp/${var.aws_cluster_name}"
     aws eks --region ${var.region} update-kubeconfig --name ${var.aws_cluster_name}
     echo "ArgoCD Username: admin"
-    echo "ArgoCD Password: $(aws secretsmanager get-secret-value --secret-id argocd-${terraform.workspace} --region ${var.region} --output json | jq -r .SecretString)"
-
+    echo "ArgoCD Password: $(kubectl get secret argocd-secret -n argocd -o jsonpath="{.data.admin\.password}" | base64 --decode)"
+    echo "Grafana Username: admin"
+    echo "Grafana Password: $(kubectl get secret -n monitoring grafana -o jsonpath="{.data.admin-password}" | base64 --decode)"
+      
        # Retrieve the list of namespaces
     namespaces=$(kubectl get namespaces -o jsonpath='{.items[*].metadata.name}')
 
@@ -51,6 +30,4 @@ output "access_argocd" {
     done
 EOT
 }
-
-
 

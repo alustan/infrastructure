@@ -5,7 +5,7 @@ module "cluster" {
   providers    = { aws = aws }
   region     = var.region
   domain_name     = var.domain_name
-  secret_creds     = var.secret_creds
+  secret_store    = var.secret_store
   cluster_nodesize     = var.cluster_nodesize
   vpc_cidr     = var.vpc_cidr
   kubernetes_version     = var.kubernetes_version
@@ -23,7 +23,7 @@ module "database" {
   db_enable_multi_az     = var.db_enable_multi_az
   region     = var.region
   vpc_cidr     = var.vpc_cidr
-  secret_creds  = var.secret_creds
+  secret_store  = var.secret_store
   }
 
 
@@ -51,7 +51,7 @@ module "database" {
   domain_name = var.domain_name
   region     = var.region
   db_engine  = var.db_engine
-  secret_creds     = var.secret_creds
+  secret_store     = var.secret_store
   git_owner     = var.git_owner
   enable_git_ssh     = var.enable_git_ssh
   slack_channel = var.slack_channel
@@ -64,7 +64,6 @@ module "database" {
   addons_git_revision  = var.addons_git_revision
   workload_git_revision  = var.workload_git_revision
   cluster_bootstrap =var.cluster_bootstrap
-  store_name        = var.store_name
   addons_argocd        = var.enable_argocd
   addons_argo_rollouts  = var.enable_argo_rollouts
   addons_ebs_csi        = var.enable_ebs_csi
