@@ -15,6 +15,10 @@ function get_tfvar {
 workspace=$(echo "${TF_VAR_workspace:-$(get_tfvar "workspace")}" | tr -d '\r')
 region=$(echo "${TF_VAR_region:-$(get_tfvar "region")}" | tr -d '\r')
 
+# Validate required variables
+: "${workspace:?Need to set WORKSPACE in environment or terraform.tfvars}"
+: "${region:?Need to set REGION in environment or terraform.tfvars}"
+
 
 # Plan the backend-bootstrap configuration to get the bucket and table names
 cd backend
@@ -27,10 +31,6 @@ S3_BUCKET_NAME=$(terraform show -json tfplan | jq -r '.planned_values.outputs.s3
 DYNAMODB_NAME=$(terraform show -json tfplan | jq -r '.planned_values.outputs.dynamodb_name.value')
 
 cd ..
-
-# Validate required variables
-: "${workspace:?Need to set WORKSPACE in environment or terraform.tfvars}"
-: "${region:?Need to set REGION in environment or terraform.tfvars}"
 
 
 # Write backend configuration to main Terraform configuration
@@ -55,8 +55,8 @@ terraform init -reconfigure
 # Select the workspace
 terraform workspace select "$workspace"
 
-export KUBECONFIG="/tmp/${workspace}-eks"
-aws eks --region "${region}" update-kubeconfig --name "${workspace}-eks"
+export KUBECONFIG="/tmp/${workspace}"
+aws eks --region "${region}" update-kubeconfig --name "${workspace}"
 
 kubectl patch ns argocd --type json --patch='[ { "op": "remove", "path": "/spec/finalizers" } ]'
 

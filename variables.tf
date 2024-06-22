@@ -50,7 +50,7 @@ variable "region" {
   default = "us-west-2"
 }
 
-variable "secret_creds" {
+variable "secret_store" {
   description = "aws secret manager store"
   type        = string
   default    = "creds_store"
@@ -143,13 +143,6 @@ variable "enable_git_ssh" {
   type        = string
   default = "false"
 }
-
-variable "store_name" {
-  description = "aws store for storing relevant urls and creds needed by developers"
-  type        = string
-  default     = "dev_creds"
- }
-
  variable "s3_bucket" {
   description = "s3 bucket name"
   type        = string

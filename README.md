@@ -16,6 +16,8 @@ The project architecture consists of the following main components:
 
 - **Gitops Bridge**: Share cloud matadata with kubernetes resources/manifest using argocd cluster secret.
 
+- **Remote Backend**: Remote backend with `S3` and `Dynamodb` with a single flow deploy script.
+
 - **Project is modular and extensible**
 
 
@@ -24,6 +26,8 @@ The project architecture consists of the following main components:
 - Run `make setup` to install and configure all needed dependencies. 
 
 - Run `make store-secrets` to create or store secret in aws secret manager
+
+- Run `make retrieve-creds` to retrieve relevant credentials and urls
 
 - Run `make deploy` to bootstrap a control cluster
 
@@ -46,8 +50,6 @@ The project architecture consists of the following main components:
 - **Argo rollout Dashboard:** `kubectl argo rollouts dashboard -n <namespace>`; Then visit `localhost:3100`
 
 - **Robusta UI:** [robusta](https://home.robusta.dev/)
-
-- **To list all relevant URLs** `terraform output -raw retrieve_creds`; Execute the output
 
 
 **This is one of multiple projects that aims to setup a functional platform for seemless app deployment with less technical overhead**

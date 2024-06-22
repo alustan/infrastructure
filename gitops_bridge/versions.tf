@@ -40,12 +40,9 @@ provider "argocd" {
 
 
 locals {
-  name = "${terraform.workspace}-eks"
+
   environment = terraform.workspace
 
- tags = {
-    Blueprint  = local.name
-   }
 }
 
 

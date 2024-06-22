@@ -17,7 +17,7 @@ data "aws_caller_identity" "current" {}
 data "aws_availability_zones" "available" {}
 
 locals {
-  name = "${terraform.workspace}-db"
+  name = terraform.workspace
   environment = terraform.workspace
   
   tags = {
