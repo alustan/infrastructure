@@ -56,9 +56,9 @@ The project architecture consists of the following main components:
 
 **Check Out:**
 
-1. [alustan](https://github.com/alustan/alustan)
+1. [alustan](https://github.com/alustan/alustan) `kubernetes native platform orchestrator`
 
-2. [manifests](https://github.com/alustan/manifests)
+2. [manifests](https://github.com/alustan/manifests) `Cluster manifests`
 
-4. [backstage-portal](https://github.com/alustan/backstage-portal)
+4. [backstage-portal](https://github.com/alustan/backstage-portal) `backstage portal`
 
