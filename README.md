@@ -60,5 +60,5 @@ The project architecture consists of the following main components:
 
 2. [manifests](https://github.com/alustan/manifests) `Cluster manifests`
 
-4. [backstage-portal](https://github.com/alustan/backstage-portal) `backstage portal`
+4. [backstage-portal](https://github.com/alustan/backstage-portal) `Backstage portal`
 
