@@ -238,12 +238,6 @@ variable "enable_cloudwatch" {
   default = "true"
 }
 
-variable "enable_metacontroller" {
-  description = "enable metacontroller addon"
-  type        = string
-  default = "true"
-}
-
 variable "enable_metrics_server" {
   description = "enable metrics server addon"
   type        = string
