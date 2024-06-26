@@ -33,6 +33,10 @@ The project architecture consists of the following main components:
 
 - Run `make destroy` to destroy the control cluster
 
+- Run `make build-deploy` to build a deploy binary from the go deploy code
+
+- Run `make build-destroy` to build a destroy binary from the go destroy code
+
 - To see all available options run `make help`
 
 - **Consider documenting possible configurations (variables) for your developers: the required and the optional**

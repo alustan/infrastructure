@@ -38,6 +38,7 @@ locals {
   
   tags = {
     Blueprint  = local.name
+    ResourceType = "cluster"
    }
 }
 

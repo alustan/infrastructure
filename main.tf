@@ -114,8 +114,5 @@ locals {
 }
 
 locals {
- 
-  configure_kubectl      = length(module.gitops_bridge) > 0 ? module.gitops_bridge[0].configure_kubectl : ""
-  configure_argocd      = length(module.gitops_bridge) > 0 ? module.gitops_bridge[0].configure_argocd : ""
-  access_argocd      = length(module.gitops_bridge) > 0 ? module.gitops_bridge[0].access_argocd : ""
+  retrieve_creds      = length(module.gitops_bridge) > 0 ? module.gitops_bridge[0].retrieve_creds : ""
 }

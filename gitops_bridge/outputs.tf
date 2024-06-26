@@ -1,5 +1,5 @@
 
-output "retrive_creds" {
+output "retrieve_creds" {
   description = "ArgoCD Access"
   value       = <<-EOT
     export KUBECONFIG="/tmp/${var.aws_cluster_name}"
