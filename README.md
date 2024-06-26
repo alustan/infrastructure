@@ -10,7 +10,7 @@
 
 The project architecture consists of the following main components:
 
-- **Cluster**: current implementaion `AWS` : Users are free to add other cloud services.
+- **Cluster**: current implementaion `EKS` : Users are free to add other cloud services.
 
 - **Database**: Current implementation `AWS RDS`: Users are free to add other DB implementations
 
@@ -27,11 +27,15 @@ The project architecture consists of the following main components:
 
 - Run `make store-secrets` to create or store secret in aws secret manager
 
-- Run `make deploy` to bootstrap a control cluster
+- Run `make deploy` to bootstrap a control cluster with other infrastructure
 
 - Run `make retrieve-creds` to retrieve relevant credentials and urls
 
-- Run `make destroy` to destroy the control cluster
+- Run `make destroy` to destroy the control cluster with other infrastructure
+
+- Run `make destroy-cluster` to destroy the control cluster
+
+- Run `make destroy-db` to destroy bootstrapped database
 
 - Run `make build-deploy` to build a deploy binary from the go deploy code
 
