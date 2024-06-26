@@ -3,7 +3,7 @@
 
 > - **Modular and Extensible Infrastructure Setup with Seamless Data Exchange Between Terraform and Kubernetes**
 
-> - **Serves as infrastructure repo used in testing terraform-controller**
+> - **Serves as infrastructure repo used in testing `alustan` platform orchestrator**
 
 
 ## Architecture
@@ -14,7 +14,7 @@ The project architecture consists of the following main components:
 
 - **Database**: Current implementation `AWS RDS`: Users are free to add other DB implementations
 
-- **Gitops Bridge**: Share cloud matadata with kubernetes resources/manifest using argocd cluster secret.
+- **Gitops Bridge**: Shares cloud matadata with kubernetes resources/manifest using argocd cluster secret.
 
 - **Remote Backend**: Remote backend with `S3` and `Dynamodb` with a single flow deploy script.
 
@@ -27,11 +27,15 @@ The project architecture consists of the following main components:
 
 - Run `make store-secrets` to create or store secret in aws secret manager
 
-- Run `make retrieve-creds` to retrieve relevant credentials and urls
-
 - Run `make deploy` to bootstrap a control cluster
 
+- Run `make retrieve-creds` to retrieve relevant credentials and urls
+
 - Run `make destroy` to destroy the control cluster
+
+- Run `make build-deploy` to build a deploy binary from the go deploy code
+
+- Run `make build-destroy` to build a destroy binary from the go destroy code
 
 - To see all available options run `make help`
 
@@ -52,15 +56,13 @@ The project architecture consists of the following main components:
 - **Robusta UI:** [robusta](https://home.robusta.dev/)
 
 
-**This is one of multiple projects that aims to setup a functional platform for seemless app deployment with less technical overhead**
+**This is one of multiple projects that aims to setup a functional platform for seamless application delivery and deployment with less technical overhead**
 
 **Check Out:**
 
-1. [Terraform-controller](https://github.com/alustan/terraform-controller)
+1. [alustan](https://github.com/alustan/alustan) `kubernetes native platform orchestrator`
 
-2. [App-controller](https://github.com/alustan/app-controller)
+2. [manifests](https://github.com/alustan/manifests) `Cluster manifests`
 
-3. [Cluster-manifests](https://github.com/alustan/cluster-manifests)
-
-4. [Alustan-Backstage](https://github.com/alustan/backstage)
+4. [backstage-portal](https://github.com/alustan/backstage-portal) `Backstage portal`
 

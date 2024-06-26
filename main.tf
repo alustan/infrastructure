@@ -79,7 +79,6 @@ module "database" {
   addons_robusta         = var.enable_robusta
   addons_atlas           = var.enable_atlas
   addons_cloudwatch_metrics = var.enable_cloudwatch
-  addons_metacontroller    = var.enable_metacontroller
   addons_metrics_server    = var.enable_metrics_server
 
 
@@ -115,8 +114,5 @@ locals {
 }
 
 locals {
- 
-  configure_kubectl      = length(module.gitops_bridge) > 0 ? module.gitops_bridge[0].configure_kubectl : ""
-  configure_argocd      = length(module.gitops_bridge) > 0 ? module.gitops_bridge[0].configure_argocd : ""
-  access_argocd      = length(module.gitops_bridge) > 0 ? module.gitops_bridge[0].access_argocd : ""
+  retrieve_creds      = length(module.gitops_bridge) > 0 ? module.gitops_bridge[0].retrieve_creds : ""
 }

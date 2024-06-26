@@ -22,6 +22,7 @@ locals {
   
   tags = {
     Blueprint  = local.name
+    ResourceType = "database"
    }
 }
 
