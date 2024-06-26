@@ -10,7 +10,7 @@ DEPLOY_SRC_DIR := ./setup/cmd/deploy
 DESTROY_SRC_DIR := ./setup/cmd/destroy
 
 # Targets
-.PHONY: all build-deploy build-destroy setup deploy destroy store-secrets retrieve-creds help
+.PHONY: all build-deploy build-destroy setup deploy destroy destroy-cluster destroy-db store-secrets retrieve-creds help
 
 all: deploy
 
@@ -27,10 +27,16 @@ setup:
 	./setup/setup.sh
 
 deploy:
-	./deploy.sh
+	./deploy
+
+destroy-cluster:
+	./destroy -c
+
+destroy-db:
+	./destroy -d
 
 destroy:
-	./destroy.sh
+	./destroy
 
 store-secrets:
 	./setup/create_aws_secret.sh
@@ -48,6 +54,8 @@ help:
 	@echo "  build-destroy    builds destroy binary"
 	@echo "  deploy           bootstraps infrastructure"
 	@echo "  destroy          destroys infrastructure"
+	@echo "  destroy-cluster  destroys cluster"
+	@echo "  destroy-db       destroys database"
 	@echo "  store-secrets    creates aws store and stores secret in store"
 	@echo "  setup            installs necessary dependencies"
 	@echo "  help             Display this help message"
