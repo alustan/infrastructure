@@ -44,7 +44,6 @@ module "database" {
   robusta_account_id     = local.robusta_account_id
   robusta_sink_token     = local.robusta_sink_token
   slack_api_key     = local.slack_api_key
-  git_webhook_secret = local.git_webhook_secret
   service_account_role_arn = local.service_account_role_arn
   argocd_random_password = local.argocd_random_password
   argocd_bcrypt_hash  = local.argocd_bcrypt_hash
@@ -77,7 +76,6 @@ module "database" {
   addons_kyverno         = var.enable_kyverno
   addons_kubecost        = var.enable_kubecost
   addons_robusta         = var.enable_robusta
-  addons_atlas           = var.enable_atlas
   addons_cloudwatch_metrics = var.enable_cloudwatch
   addons_metrics_server    = var.enable_metrics_server
 
@@ -104,7 +102,7 @@ locals {
   argocd_random_password =  length(module.cluster) > 0 ? module.cluster[0].argocd_random_password : ""
   argocd_bcrypt_hash =  length(module.cluster) > 0 ? module.cluster[0].argocd_bcrypt_hash : ""
  
-  git_webhook_secret =  length(module.cluster) > 0 ? module.cluster[0].git_webhook_secret : ""
+
   
   
 }

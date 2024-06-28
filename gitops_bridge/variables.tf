@@ -84,13 +84,13 @@ variable "workload_git_repo" {
 }
 
 variable "addons_repo_path" {
-  description = "Git repository base path for k8s manifest"
+  description = "Git repository base path for adddons manifest"
   type        = string
   default     = "control-plane"
 }
 
 variable "workload_repo_path" {
-  description = "Git repository base path for k8s manifest"
+  description = "Git repository base path for workload manifest"
   type        = string
   default     = "workloads"
 }
@@ -138,11 +138,6 @@ variable "slack_api_key" {
 }
 
 
-variable "git_webhook_secret" {
-  description = "git webhook secret"
-  type        = string
-
-}
 
 variable "service_account_role_arn" {
   description = "service account role arn"
@@ -252,11 +247,6 @@ variable "addons_robusta" {
   default = "true"
 }
 
-variable "addons_atlas" {
-  description = "enable atlas addon"
-  type        = string
-  default = "true"
-}
 variable "addons_cloudwatch_metrics" {
   description = "enable atlas addon"
   type        = string

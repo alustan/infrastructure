@@ -67,7 +67,12 @@ resource "argocd_application" "bootstrap_workload" {
         }
     }
 
-    sync_policy {}
+     sync_policy {
+      automated {
+        prune     = true
+        self_heal = true
+      }
+    }
   }
   depends_on = [helm_release.argocd, argocd_application.bootstrap_addons]
 }

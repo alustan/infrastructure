@@ -54,21 +54,16 @@ output "robusta_sink_token" {
 }
 
 output "slack_api_key" {
-  description = "robusta sink token"
+  description = "slack api key"
   value       = jsondecode(data.aws_secretsmanager_secret_version.creds.secret_string).SLACK_API_KEY
 }
 
 output "git_ssh_key" {
-  description = "robusta sink token"
+  description = "git ssh key"
   value       = jsondecode(data.aws_secretsmanager_secret_version.creds.secret_string).SSH_KEY
 }
 
 
-
-output "git_webhook_secret" {
-  description = "port client secret"
-  value       = jsondecode(data.aws_secretsmanager_secret_version.creds.secret_string).GIT_WEBHOOK_SECRET
-}
 
 output "argocd_random_password" {
   description = "argocd random password"

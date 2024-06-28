@@ -10,7 +10,7 @@
 
 The project architecture consists of the following main components:
 
-- **Cluster**: current implementaion `EKS` : Users are free to add other cloud services.
+- **Cluster**: current implementaion `EKS` : Users are free to add other managed kubernetes.
 
 - **Database**: Current implementation `AWS RDS`: Users are free to add other DB implementations
 
@@ -43,7 +43,7 @@ The project architecture consists of the following main components:
 
 - To see all available options run `make help`
 
-- **Consider documenting possible configurations (variables) for your developers: the required and the optional**
+- **All needed variables can be found in root level variables.tf**
 
 ## Relevant URLs
 
@@ -59,12 +59,26 @@ The project architecture consists of the following main components:
 
 - **Robusta UI:** [robusta](https://home.robusta.dev/)
 
+## Relevant Secrets Keys to be stored in aws secret manager
+
+- `SSH_KEY`: git ssh key (if using private repo)
+
+- `SLACK_API_KEY`: slack api key (if robusta is enabled)
+- `ROBUSTA_SINK_TOKEN`: robusta sink token (if robusta is enabled)
+- `ROBUSTA_ACCOUNT_ID`: robusta account id (if robusta is enabled)
+- `ROBUSTA_SIGNING_KEY`: robusta signing key (if robusta is enabled)
+
+- `DB_NAME`: database name (if provision DB)
+- `DB_USER`: database user (if provision DB)
+- `DB_PASSWORD`: database password (if provision DB)
+
+
 
 **This is one of multiple projects that aims to setup a functional platform for seamless application delivery and deployment with less technical overhead**
 
 **Check Out:**
 
-1. [alustan](https://github.com/alustan/alustan) `kubernetes native platform orchestrator`
+1. [alustan](https://github.com/alustan/alustan) `Kubernetes native platform orchestrator`
 
 2. [manifests](https://github.com/alustan/manifests) `Cluster manifests`
 
