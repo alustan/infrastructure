@@ -78,11 +78,5 @@ output "argocd_bcrypt_hash" {
 
 
 
-output "git_webhook_secret" {
-  description = "port client id"
-  value       = local.git_webhook_secret
-}
-
-
 
 

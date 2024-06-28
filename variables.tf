@@ -2,7 +2,7 @@
 #  Required values
 #  #######################################################################
 variable "cluster_bootstrap" {
-  description = "bootsrap control cluster from local machine"
+  description = "bootstrap control cluster from local machine"
   type        = string
   default     = "false"
 }
@@ -99,29 +99,29 @@ variable "addons_git_repo" {
 variable "workload_git_repo" {
   description = "name of Git repository"
   type        = string
-  default = "manifests"
+  default = "cluster-manifests"
 }
 
 variable "addons_repo_path" {
-  description = "Git repository base path for k8s manifest"
+  description = "Git repository base path for addons manifest"
   type        = string
   default     = "control-plane"
 }
 
 variable "workload_repo_path" {
-  description = "Git repository base path for k8s manifest"
+  description = "Git repository base path for workload manifest"
   type        = string
   default     = "workloads"
 }
 
 variable "addons_git_revision" {
-  description = "Git repository revision/branch/ref k8s manifest"
+  description = "Git repository revision/branch/ref for addons manifest"
   type        = string
   default     = "main"
 }
 
 variable "workload_git_revision" {
-  description = "Git repository revision/branch/ref k8s manifest"
+  description = "Git repository revision/branch/ref for workload manifest"
   type        = string
   default     = "main"
 }
@@ -143,15 +143,6 @@ variable "enable_git_ssh" {
   type        = string
   default = "false"
 }
- variable "s3_bucket" {
-  description = "s3 bucket name"
-  type        = string
- }
-
- variable "dynamodb" {
-  description = "dynamodb table name"
-  type        = string
- }
 
 variable "workspace" {
   description = "terraform workspace"
@@ -227,11 +218,6 @@ variable "enable_robusta" {
   default = "true"
 }
 
-variable "enable_atlas" {
-  description = "enable atlas addon"
-  type        = string
-  default = "true"
-}
 variable "enable_cloudwatch" {
   description = "enable atlas addon"
   type        = string

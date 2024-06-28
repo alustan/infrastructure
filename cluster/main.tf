@@ -32,7 +32,7 @@ locals {
   argocd_random_password =  length(module.aws_cluster) > 0 ? module.aws_cluster[0].argocd_random_password : ""
   argocd_bcrypt_hash =  length(module.aws_cluster) > 0 ? module.aws_cluster[0].argocd_bcrypt_hash : ""
  
-  git_webhook_secret =  length(module.aws_cluster) > 0 ? module.aws_cluster[0].git_webhook_secret : ""
+
 
   
 

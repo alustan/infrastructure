@@ -20,7 +20,6 @@ locals {
     enable_kyverno                         = var.addons_kyverno == "true" ? true : false
     enable_kubecost                        = var.addons_kubecost == "true" ? true : false
     enable_robusta                         = var.addons_robusta == "true" ? true : false
-    enable_atlas                           = var.addons_atlas == "true" ? true : false
     enable_metrics_server                 = var.addons_metrics_server == "true" ? true : false
   
     
@@ -57,7 +56,6 @@ locals {
       slack_api_key               =   var.slack_api_key
 
     
-      git_webhook_secret           = var.git_webhook_secret
       
       kube_cost_host              ="kubecost-${terraform.workspace}.${var.domain_name}"
       grafana_host                ="grafana-${terraform.workspace}.${var.domain_name}"

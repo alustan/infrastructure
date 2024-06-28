@@ -138,11 +138,6 @@ variable "slack_api_key" {
 }
 
 
-variable "git_webhook_secret" {
-  description = "git webhook secret"
-  type        = string
-
-}
 
 variable "service_account_role_arn" {
   description = "service account role arn"
@@ -252,11 +247,6 @@ variable "addons_robusta" {
   default = "true"
 }
 
-variable "addons_atlas" {
-  description = "enable atlas addon"
-  type        = string
-  default = "true"
-}
 variable "addons_cloudwatch_metrics" {
   description = "enable atlas addon"
   type        = string
