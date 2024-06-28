@@ -84,13 +84,13 @@ variable "workload_git_repo" {
 }
 
 variable "addons_repo_path" {
-  description = "Git repository base path for k8s manifest"
+  description = "Git repository base path for adddons manifest"
   type        = string
   default     = "control-plane"
 }
 
 variable "workload_repo_path" {
-  description = "Git repository base path for k8s manifest"
+  description = "Git repository base path for workload manifest"
   type        = string
   default     = "workloads"
 }

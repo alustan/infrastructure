@@ -103,13 +103,13 @@ variable "workload_git_repo" {
 }
 
 variable "addons_repo_path" {
-  description = "Git repository base path for addons manifest"
+  description = "Git repository path for addons manifest"
   type        = string
   default     = "control-plane"
 }
 
 variable "workload_repo_path" {
-  description = "Git repository base path for workload manifest"
+  description = "Git repository path for workload manifest"
   type        = string
   default     = "workloads"
 }
