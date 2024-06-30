@@ -31,6 +31,8 @@ locals {
     var.blueprint_gitops_metadata,
     {
       aws_cluster_name = var.aws_cluster_name
+      eks_cluster_endpoint = var.eks_cluster_endpoint
+      eks_cluster_ca_data = var.eks_cluster_certificate_authority_data
       aws_region       = var.region
       aws_account_id   = var.aws_account_id
       aws_vpc_id       = var.aws_vpc_id

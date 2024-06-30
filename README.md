@@ -74,13 +74,5 @@ The project architecture consists of the following main components:
 
 
 
-**This is one of multiple projects that aims to setup a functional platform for seamless application delivery and deployment with less technical overhead**
-
-**Check Out:**
-
-1. [alustan](https://github.com/alustan/alustan) `Kubernetes native platform orchestrator`
-
-2. [manifests](https://github.com/alustan/manifests) `Cluster manifests`
-
-4. [backstage-portal](https://github.com/alustan/backstage-portal) `Backstage portal`
+**Alustan:** focuses on building tools and platforms that ensures right implementation of devops principles
 
