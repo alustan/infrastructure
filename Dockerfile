@@ -9,6 +9,7 @@ RUN apt-get update && \
     git \
     unzip \
     jq \
+    ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
 # Define Terraform version and download URL
@@ -20,7 +21,7 @@ RUN curl -fsSL ${TERRAFORM_URL} -o terraform.zip && \
     unzip terraform.zip -d /usr/local/bin/ && \
     rm terraform.zip
 
-## specific to your cloud implementaion; replace with custom cli
+## specific to your cloud implementation; replace with custom CLI
 # Install AWS CLI
 RUN curl -fsSL "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
     unzip awscliv2.zip && \
@@ -38,6 +39,7 @@ COPY --from=builder /usr/local/bin/aws /usr/local/bin/aws
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     curl \
+    ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
 # Set up a non-root user
@@ -50,6 +52,3 @@ WORKDIR /app
 COPY . .
 
 CMD ["/bin/bash", "-c", "chmod +x $SCRIPT && exec $SCRIPT"]
-
-
-
