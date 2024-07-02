@@ -1,5 +1,5 @@
-# Stage 1: Build stage
-FROM ubuntu:latest AS builder
+# Stage 1: Base stage
+FROM ubuntu:22.04 AS base
 
 # Update package lists and install necessary build dependencies
 RUN apt-get update && \
@@ -11,33 +11,28 @@ RUN apt-get update && \
     jq \
     && rm -rf /var/lib/apt/lists/*
 
+# Stage 2: Builder stage
+FROM hashicorp/terraform:1.9 AS builder
 
-# Download and install Terraform
-RUN wget https://releases.hashicorp.com/terraform/1.8.1/terraform_1.8.1_linux_amd64.zip && \
-    unzip terraform_1.8.1_linux_amd64.zip -d /usr/local/bin/ && \
-    rm terraform_1.8.1_linux_amd64.zip
+# Copy necessary binaries from the base stage
+COPY --from=base /usr/local/bin /usr/local/bin
 
-# Install kubectl
-RUN curl -fsSL "https://dl.k8s.io/release/$(curl -fsSL https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" -o kubectl && \
-    install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl && \
-    rm kubectl
-
-## specific to your cloud implementaion; replace with custom cli
+#cloud specific  cli installation
 # Install AWS CLI
 RUN curl -fsSL "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
     unzip awscliv2.zip && \
     ./aws/install && \
     rm -rf awscliv2.zip aws
 
-# Stage 2: Runtime stage
+# Stage 3: Runtime stage
 FROM ubuntu:22.04
 
 # Copy necessary binaries from the builder stage
 COPY --from=builder /usr/local/bin/terraform /usr/local/bin/terraform
-COPY --from=builder /usr/local/bin/kubectl /usr/local/bin/kubectl
+
 COPY --from=builder /usr/local/bin/aws /usr/local/bin/aws
 
-# Clean up unnecessary packages from the runtime image
+# Install runtime dependencies
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     curl \
@@ -52,7 +47,5 @@ WORKDIR /app
 # Copy the rest of your application
 COPY . .
 
+# Define the entry point
 CMD ["/bin/bash", "-c", "chmod +x $SCRIPT && exec $SCRIPT"]
-
-
-
