@@ -3,23 +3,26 @@
 
 > - **Modular and Extensible Infrastructure Setup with Seamless Data Exchange Between Terraform and Kubernetes**
 
-> - **Serves as infrastructure repo used in testing `alustan` platform orchestrator**
+> - **Serves as infrastructure repo used in testing `alustan` continuous delivery platform**
 
 
 ## Architecture
 
 The project architecture consists of the following main components:
 
-- **Cluster**: current implementaion `EKS` : Users are free to add other managed kubernetes.
+- **Cluster**: current implementaion `EKS` : Users can extend to other kubernetes solutions.
 
-- **Database**: Current implementation `AWS RDS`: Users are free to add other DB implementations
+- **Database**: Current implementation `AWS RDS`: Users can extend to other DB implementations.
 
 - **Gitops Bridge**: Shares cloud matadata with kubernetes resources/manifest using argocd cluster secret.
 
-- **Remote Backend**: Remote backend with `S3` and `Dynamodb` with a single flow deploy script.
+- **Remote Backend**: Remote backend with `S3` and `Dynamodb` with a single flow `GO` deploy script.
 
-- **Project is modular and extensible**
+- **Github Action Workflow**: Workflow to build infrastructure OCI image with `Trivy` vulnerability scan
 
+> **The cluster addons being used are hosted [here](https://github.com/alustan/cluster-manifests)**
+
+> **The relevant metadata needed by the addons are automatically sourced from the `argod cluster secret`**
 
 ## setup
 
@@ -29,17 +32,19 @@ The project architecture consists of the following main components:
 
 - Run `make deploy` to bootstrap a control cluster with other infrastructure
 
-- Run `make retrieve-creds` to retrieve relevant credentials and urls
+- Run `make retrieve-creds` to retrieve relevant credentials and urls from control cluster
 
-- Run `make destroy` to destroy the control cluster with other infrastructure
+- Run `make destroy` to destroy provisioned infrastructure
 
 - Run `make destroy-cluster` to destroy the control cluster
 
 - Run `make destroy-db` to destroy bootstrapped database
 
-- Run `make build-deploy` to build a deploy binary from the go deploy code
+- Run `make build-deploy` to build deploy binary from the GO deploy code
 
-- Run `make build-destroy` to build a destroy binary from the go destroy code
+- Run `make build-destroy` to build destroy binary from the GO destroy code
+
+- Run `build-postdeploy` to build aws-resource binary from the GO postdeploy code
 
 - To see all available options run `make help`
 
@@ -68,9 +73,9 @@ The project architecture consists of the following main components:
 - `ROBUSTA_ACCOUNT_ID`: robusta account id (if robusta is enabled)
 - `ROBUSTA_SIGNING_KEY`: robusta signing key (if robusta is enabled)
 
-- `DB_NAME`: database name (if provision DB)
-- `DB_USER`: database user (if provision DB)
-- `DB_PASSWORD`: database password (if provision DB)
+- `DB_NAME`: database name (if DB was provisioned)
+- `DB_USER`: database user (if DB was provisioned)
+- `DB_PASSWORD`: database password (if DB was provisioned)
 
 
 
