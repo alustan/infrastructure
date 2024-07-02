@@ -34,7 +34,7 @@ COPY --from=builder /usr/local/bin/aws /usr/local/bin/aws
 # Clean up unnecessary packages from the runtime image
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-    curl \
+    git \
     ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
