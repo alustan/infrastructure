@@ -11,14 +11,11 @@ RUN apt-get update && \
     jq \
     && rm -rf /var/lib/apt/lists/*
 
-# Define Terraform version and download URL
-ENV TERRAFORM_VERSION=1.8.1
-ENV TERRAFORM_URL=https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
 
 # Download and install Terraform
-RUN curl -fsSL ${TERRAFORM_URL} -o terraform.zip && \
-    unzip terraform.zip -d /usr/local/bin/ && \
-    rm terraform.zip
+RUN wget https://releases.hashicorp.com/terraform/1.8.1/terraform_1.8.1_linux_amd64.zip && \
+    unzip terraform_1.8.1_linux_amd64.zip -d /usr/local/bin/ && \
+    rm terraform_1.8.1_linux_amd64.zip
 
 # Install kubectl
 RUN curl -fsSL "https://dl.k8s.io/release/$(curl -fsSL https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" -o kubectl && \
