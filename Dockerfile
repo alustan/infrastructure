@@ -1,5 +1,5 @@
-# Stage 1: Base stage
-FROM ubuntu:22.04 AS base
+# stage 1: builder stage
+FROM hashicorp/terraform:1.9 AS builder
 
 # Update package lists and install necessary build dependencies
 RUN apt-get update && \
@@ -11,12 +11,6 @@ RUN apt-get update && \
     jq \
     && rm -rf /var/lib/apt/lists/*
 
-# Stage 2: Builder stage
-FROM hashicorp/terraform:1.9 AS builder
-
-# Copy necessary binaries from the base stage
-COPY --from=base /usr/local/bin /usr/local/bin
-
 #cloud specific  cli installation
 # Install AWS CLI
 RUN curl -fsSL "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
@@ -24,7 +18,7 @@ RUN curl -fsSL "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "aw
     ./aws/install && \
     rm -rf awscliv2.zip aws
 
-# Stage 3: Runtime stage
+# Stage 2: Runtime stage
 FROM ubuntu:22.04
 
 # Copy necessary binaries from the builder stage
