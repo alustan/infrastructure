@@ -38,9 +38,6 @@ RUN apt-get update && \
     ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
-# Set up a non-root user
-RUN groupadd -r appuser && useradd -r -g appuser appuser
-USER appuser
 
 WORKDIR /app
 
