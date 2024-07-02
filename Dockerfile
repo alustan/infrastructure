@@ -1,5 +1,5 @@
 # Stage 1: Build stage
-FROM ubuntu:22.04 AS builder
+FROM ubuntu:latest AS builder
 
 # Update package lists and install necessary build dependencies
 RUN apt-get update && \
