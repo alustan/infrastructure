@@ -16,9 +16,9 @@ The project architecture consists of the following main components:
 
 - **Gitops Bridge**: Shares cloud matadata with kubernetes resources/manifest using argocd cluster secret.
 
-- **Remote Backend**: Remote backend with `S3` and `Dynamodb` with a single flow `go` deploy script.
+- **Remote Backend**: Remote backend with `S3` and `Dynamodb` with a single flow `GO` deploy script.
 
-- **Github Action Workflow**: Workflow to build infrastructure OCI image
+- **Github Action Workflow**: Workflow to build infrastructure OCI image with `Trivy` vulnerability scan
 
 > **The cluster addons being used are hosted [here](https://github.com/alustan/cluster-manifests)**
 
@@ -40,9 +40,11 @@ The project architecture consists of the following main components:
 
 - Run `make destroy-db` to destroy bootstrapped database
 
-- Run `make build-deploy` to build a deploy binary from the go deploy code
+- Run `make build-deploy` to build deploy binary from the GO deploy code
 
-- Run `make build-destroy` to build a destroy binary from the go destroy code
+- Run `make build-destroy` to build destroy binary from the GO destroy code
+
+- Run `build-postdeploy` to build aws-resource binary from the GO postdeploy code
 
 - To see all available options run `make help`
 
