@@ -1,5 +1,5 @@
-# stage 1: builder stage
-FROM hashicorp/terraform:1.9 AS builder
+# Stage 1: Build stage
+FROM ubuntu:22.04 AS builder
 
 # Update package lists and install necessary build dependencies
 RUN apt-get update && \
@@ -11,7 +11,16 @@ RUN apt-get update && \
     jq \
     && rm -rf /var/lib/apt/lists/*
 
-#cloud specific  cli installation
+# Define Terraform version and download URL
+ENV TERRAFORM_VERSION=1.9
+ENV TERRAFORM_URL=https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
+
+# Download and install Terraform
+RUN curl -fsSL ${TERRAFORM_URL} -o terraform.zip && \
+    unzip terraform.zip -d /usr/local/bin/ && \
+    rm terraform.zip
+
+## specific to your cloud implementaion; replace with custom cli
 # Install AWS CLI
 RUN curl -fsSL "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
     unzip awscliv2.zip && \
@@ -23,10 +32,9 @@ FROM ubuntu:22.04
 
 # Copy necessary binaries from the builder stage
 COPY --from=builder /usr/local/bin/terraform /usr/local/bin/terraform
-
 COPY --from=builder /usr/local/bin/aws /usr/local/bin/aws
 
-# Install runtime dependencies
+# Clean up unnecessary packages from the runtime image
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     curl \
@@ -41,5 +49,7 @@ WORKDIR /app
 # Copy the rest of your application
 COPY . .
 
-# Define the entry point
 CMD ["/bin/bash", "-c", "chmod +x $SCRIPT && exec $SCRIPT"]
+
+
+
