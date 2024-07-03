@@ -31,6 +31,7 @@ locals {
   git_ssh_key =  length(module.aws_cluster) > 0 ? module.aws_cluster[0].git_ssh_key : ""
   argocd_random_password =  length(module.aws_cluster) > 0 ? module.aws_cluster[0].argocd_random_password : ""
   argocd_bcrypt_hash =  length(module.aws_cluster) > 0 ? module.aws_cluster[0].argocd_bcrypt_hash : ""
+  container_registry_secret = length(module.aws_cluster) > 0 ? module.aws_cluster[0].container_registry_secret : ""
  
 
 

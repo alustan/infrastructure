@@ -230,6 +230,10 @@ variable "enable_metrics_server" {
   default = "true"
 }
 
-
+variable "enable_alustan" {
+  description = "enable alustan addon"
+  type        = string
+  default = "true"
+}
 
 

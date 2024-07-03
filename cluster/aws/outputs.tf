@@ -38,6 +38,11 @@ output "eks_cluster_certificate_authority_data" {
   value       = module.eks.cluster_certificate_authority_data
 }
 
+output "container_registry_secret" {
+  description = "container registry secret"
+  value       = jsondecode(data.aws_secretsmanager_secret_version.creds.secret_string).REGISTRY_SECRET
+}
+
 output "robusta_signing_key" {
   description = "robusta signing key"
   value       = jsondecode(data.aws_secretsmanager_secret_version.creds.secret_string).ROBUSTA_SIGNING_KEY

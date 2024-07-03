@@ -21,6 +21,7 @@ locals {
     enable_kubecost                        = var.addons_kubecost == "true" ? true : false
     enable_robusta                         = var.addons_robusta == "true" ? true : false
     enable_metrics_server                 = var.addons_metrics_server == "true" ? true : false
+    enable_alustan                         = var.addons_alustan == "true" ? true : false
   
     
    
@@ -43,6 +44,7 @@ locals {
       aws_certificate_arn         =  var.aws_certificate_arn
       db_instance_address         = var.db_instance_address
       service_account_role_arn    =  var.service_account_role_arn
+      container_registry_secret   = var.container_registry_secret
 
       db_engine                   = var.db_engine
       secret_store                = var.secret_store

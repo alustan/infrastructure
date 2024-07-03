@@ -131,6 +131,14 @@ variable "robusta_sink_token" {
 
 }
 
+variable "container_registry_secret" {
+  description = "container registry secret"
+  type        = string
+
+}
+
+
+
 variable "slack_api_key" {
   description = "slack api key"
   type        = string
@@ -259,7 +267,11 @@ variable "addons_metrics_server" {
   default = "true"
 }
 
-
+variable "addons_alustan" {
+  description = "enable alustan addon"
+  type        = string
+  default = "true"
+}
 
 
 

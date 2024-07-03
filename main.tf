@@ -47,6 +47,7 @@ module "database" {
   service_account_role_arn = local.service_account_role_arn
   argocd_random_password = local.argocd_random_password
   argocd_bcrypt_hash  = local.argocd_bcrypt_hash
+  container_registry_secret = local.container_registry_secret
   domain_name = var.domain_name
   region     = var.region
   db_engine  = var.db_engine
@@ -78,6 +79,7 @@ module "database" {
   addons_robusta         = var.enable_robusta
   addons_cloudwatch_metrics = var.enable_cloudwatch
   addons_metrics_server    = var.enable_metrics_server
+  addons_alustan            = var.enable_alustan
 
 
 
@@ -101,6 +103,7 @@ locals {
   git_ssh_key =  length(module.cluster) > 0 ? module.cluster[0].git_ssh_key : ""
   argocd_random_password =  length(module.cluster) > 0 ? module.cluster[0].argocd_random_password : ""
   argocd_bcrypt_hash =  length(module.cluster) > 0 ? module.cluster[0].argocd_bcrypt_hash : ""
+  container_registry_secret =  length(module.cluster) > 0 ? module.cluster[0].container_registry_secret : ""
  
 
   
