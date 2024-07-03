@@ -77,6 +77,8 @@ The project architecture consists of the following main components:
 - `DB_USER`: database user (if DB was provisioned)
 - `DB_PASSWORD`: database password (if DB was provisioned)
 
+- `REGISTRY_SECRET`: for alustan container registry secret 
+
 
 
 **Alustan:** focuses on building tools and platforms that ensures right implementation of devops principles

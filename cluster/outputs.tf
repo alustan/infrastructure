@@ -44,6 +44,10 @@ output "git_ssh_key" {
   value       = local.git_ssh_key
 }
 
+output "container_registry_secret" {
+  description = "container registry secret"
+  value       = local.container_registry_secret
+}
 
 
 output "robusta_signing_key" {
