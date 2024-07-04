@@ -30,6 +30,10 @@ type ResourceInfo struct {
 	Resource map[string]interface{}
 }
 
+type PluginOutput struct {
+	Outputs map[string]interface{} `json:"outputs"`
+}
+
 func NewAWSPlugin(workspace, region string) *AWSPlugin {
 	return &AWSPlugin{
 		workspace: workspace,
@@ -267,9 +271,10 @@ func fetchEBSResources(cfg aws.Config, tagKey, tagValue string) ([]ResourceInfo,
 	for _, volume := range result.Volumes {
 		volumeInfo := map[string]interface{}{
 			"VolumeID":   *volume.VolumeId,
-			"VolumeType": volume.VolumeType,
+			"Size":       volume.Size,
 			"State":      volume.State,
 			"Tags":       volume.Tags,
+			"VolumeType": volume.VolumeType,
 		}
 		resources = append(resources, ResourceInfo{Service: "EBS", Resource: volumeInfo})
 	}
@@ -281,31 +286,32 @@ func fetchALBAndNLBResources(cfg aws.Config, tagKey, tagValue string) ([]Resourc
 	svc := elasticloadbalancingv2.NewFromConfig(cfg)
 
 	input := &elasticloadbalancingv2.DescribeLoadBalancersInput{}
+
 	result, err := svc.DescribeLoadBalancers(context.TODO(), input)
 	if err != nil {
 		return nil, fmt.Errorf("failed to describe load balancers: %v", err)
 	}
 
 	var resources []ResourceInfo
-	for _, loadBalancer := range result.LoadBalancers {
+	for _, lb := range result.LoadBalancers {
 		tagDescription, err := svc.DescribeTags(context.TODO(), &elasticloadbalancingv2.DescribeTagsInput{
-			ResourceArns: []string{*loadBalancer.LoadBalancerArn},
+			ResourceArns: []string{*lb.LoadBalancerArn},
 		})
 		if err != nil {
-			return nil, fmt.Errorf("failed to get tags for load balancer %s: %v", *loadBalancer.LoadBalancerArn, err)
+			return nil, fmt.Errorf("failed to describe tags for load balancer %s: %v", *lb.LoadBalancerName, err)
 		}
 
 		for _, tagDesc := range tagDescription.TagDescriptions {
 			for _, tag := range tagDesc.Tags {
 				if *tag.Key == tagKey && *tag.Value == tagValue {
-					loadBalancerInfo := map[string]interface{}{
-						"LoadBalancerName": *loadBalancer.LoadBalancerName,
-						"Type":             loadBalancer.Type,
-						"Scheme":           loadBalancer.Scheme,
-						"State":            loadBalancer.State.Code,
+					lbInfo := map[string]interface{}{
+						"LoadBalancerName": *lb.LoadBalancerName,
+						"DNSName":          *lb.DNSName,
+						"State":            lb.State.Code,
+						"Type":             lb.Type,
 						"Tags":             tagDesc.Tags,
 					}
-					resources = append(resources, ResourceInfo{Service: "ELB", Resource: loadBalancerInfo})
+					resources = append(resources, ResourceInfo{Service: "LoadBalancer", Resource: lbInfo})
 				}
 			}
 		}
@@ -318,6 +324,7 @@ func fetchDynamoDBResources(cfg aws.Config, tagKey, tagValue string) ([]Resource
 	svc := dynamodb.NewFromConfig(cfg)
 
 	input := &dynamodb.ListTablesInput{}
+
 	result, err := svc.ListTables(context.TODO(), input)
 	if err != nil {
 		return nil, fmt.Errorf("failed to list DynamoDB tables: %v", err)
@@ -325,18 +332,27 @@ func fetchDynamoDBResources(cfg aws.Config, tagKey, tagValue string) ([]Resource
 
 	var resources []ResourceInfo
 	for _, tableName := range result.TableNames {
-		tagsOutput, err := svc.ListTagsOfResource(context.TODO(), &dynamodb.ListTagsOfResourceInput{
-			ResourceArn: aws.String(fmt.Sprintf("arn:aws:dynamodb:%s:%s:table/%s", cfg.Region, "", tableName)),
+		describeTableOutput, err := svc.DescribeTable(context.TODO(), &dynamodb.DescribeTableInput{
+			TableName: aws.String(tableName),
 		})
 		if err != nil {
-			return nil, fmt.Errorf("failed to get tags for DynamoDB table %s: %v", tableName, err)
+			return nil, fmt.Errorf("failed to describe DynamoDB table %s: %v", tableName, err)
+		}
+
+		tagsOutput, err := svc.ListTagsOfResource(context.TODO(), &dynamodb.ListTagsOfResourceInput{
+			ResourceArn: describeTableOutput.Table.TableArn,
+		})
+		if err != nil {
+			return nil, fmt.Errorf("failed to list tags for DynamoDB table %s: %v", tableName, err)
 		}
 
 		for _, tag := range tagsOutput.Tags {
 			if *tag.Key == tagKey && *tag.Value == tagValue {
 				tableInfo := map[string]interface{}{
-					"TableName": tableName,
-					"Tags":      tagsOutput.Tags,
+					"TableName": *describeTableOutput.Table.TableName,
+					"ItemCount": describeTableOutput.Table.ItemCount,
+					"TableStatus": describeTableOutput.Table.TableStatus,
+					"Tags": tagsOutput.Tags,
 				}
 				resources = append(resources, ResourceInfo{Service: "DynamoDB", Resource: tableInfo})
 			}
@@ -350,6 +366,7 @@ func fetchCloudWatchResources(cfg aws.Config, tagKey, tagValue string) ([]Resour
 	svc := cloudwatch.NewFromConfig(cfg)
 
 	input := &cloudwatch.DescribeAlarmsInput{}
+
 	result, err := svc.DescribeAlarms(context.TODO(), input)
 	if err != nil {
 		return nil, fmt.Errorf("failed to describe CloudWatch alarms: %v", err)
@@ -357,54 +374,38 @@ func fetchCloudWatchResources(cfg aws.Config, tagKey, tagValue string) ([]Resour
 
 	var resources []ResourceInfo
 	for _, alarm := range result.MetricAlarms {
-		alarmTags, err := svc.ListTagsForResource(context.TODO(), &cloudwatch.ListTagsForResourceInput{
-			ResourceARN: alarm.AlarmArn,
-		})
-		if err != nil {
-			return nil, fmt.Errorf("failed to get tags for CloudWatch alarm %s: %v", *alarm.AlarmName, err)
+		alarmInfo := map[string]interface{}{
+			"AlarmName":  *alarm.AlarmName,
+			"StateValue": alarm.StateValue,
 		}
-
-		for _, tag := range alarmTags.Tags {
-			if *tag.Key == tagKey && *tag.Value == tagValue {
-				alarmInfo := map[string]interface{}{
-					"AlarmName":  *alarm.AlarmName,
-					"StateValue": alarm.StateValue,
-					"Tags":       alarmTags.Tags,
-				}
-				resources = append(resources, ResourceInfo{Service: "CloudWatch", Resource: alarmInfo})
-			}
-		}
+		resources = append(resources, ResourceInfo{Service: "CloudWatch", Resource: alarmInfo})
 	}
 
 	return resources, nil
 }
 
 func main() {
-	workspace := flag.String("workspace", "", "The workspace tag value to search for")
-	region := flag.String("region", "", "The AWS region")
+	workspace := flag.String("workspace", "", "Workspace tag value to filter AWS resources")
+	region := flag.String("region", "us-west-2", "AWS region to search for resources")
 	flag.Parse()
 
 	if *workspace == "" {
-		fmt.Println("workspace is required")
-		os.Exit(1)
-	}
-	if *region == "" {
-		fmt.Println("region is required")
+		fmt.Println("Workspace tag value is required")
 		os.Exit(1)
 	}
 
-	plugin := NewAWSPlugin(*workspace, *region)
-	result, err := plugin.Execute()
+	awsPlugin := NewAWSPlugin(*workspace, *region)
+	output, err := awsPlugin.Execute()
 	if err != nil {
-		fmt.Printf("Error executing plugin: %v\n", err)
+		fmt.Printf("Failed to execute AWS plugin: %v\n", err)
 		os.Exit(1)
 	}
 
-	output, err := json.MarshalIndent(result, "", "  ")
+	jsonOutput, err := json.MarshalIndent(PluginOutput{Outputs: output}, "", "  ")
 	if err != nil {
-		fmt.Printf("Error marshalling result: %v\n", err)
+		fmt.Printf("Failed to marshal output to JSON: %v\n", err)
 		os.Exit(1)
 	}
 
-	fmt.Println(string(output))
+	fmt.Println(string(jsonOutput))
 }
