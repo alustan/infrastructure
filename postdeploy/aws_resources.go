@@ -46,7 +46,13 @@ func (p *AWSPlugin) Execute() (map[string]interface{}, error) {
 	if err != nil {
 		return nil, err
 	}
-	result, err := json.Marshal(resources)
+
+	// Wrap the resources under "externalresources" key
+	externalResources := map[string]interface{}{
+		"externalresources": resources,
+	}
+
+	result, err := json.Marshal(externalResources)
 	if err != nil {
 		return nil, fmt.Errorf("error marshalling creds: %v", err)
 	}
