@@ -2,7 +2,7 @@
 # RDS Module
 ################################################################################
 module "db" {
-  count = var.db_enable ? 1 : 0
+
 
   source = "terraform-aws-modules/rds/aws"
 
@@ -27,7 +27,7 @@ module "db" {
 
   multi_az               = var.db_enable_multi_az
   db_subnet_group_name   = module.vpc.database_subnet_group
-  vpc_security_group_ids = [element(module.security_group[*].security_group_id, 0)]
+  vpc_security_group_ids = module.security_group.security_group_id
 
   maintenance_window              = "Mon:00:00-Mon:03:00"
   backup_window                   = "03:00-06:00"
@@ -65,7 +65,7 @@ module "db" {
 }
 
 module "security_group" {
-  count = var.db_enable ? 1 : 0
+
   source  = "terraform-aws-modules/security-group/aws"
   version = "~> 5.0"
 

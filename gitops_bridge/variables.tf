@@ -52,6 +52,21 @@ variable "db_instance_address" {
   type        = string
 }
 
+variable "db_name" {
+  description = "db name"
+  type        = string
+}
+
+variable "db_user" {
+  description = "db user"
+  type        = string
+}
+
+variable "db_password" {
+  description = "db password"
+  type        = string
+}
+
 variable "region" {
   description = "AWS region"
   type        = string

@@ -312,7 +312,6 @@ func fetchALBAndNLBResources(cfg aws.Config, tagKey, tagValue string) ([]Resourc
 				if *tag.Key == tagKey && *tag.Value == tagValue {
 					lbInfo := map[string]interface{}{
 						"LoadBalancerName": *lb.LoadBalancerName,
-						"DNSName":          *lb.DNSName,
 						"State":            lb.State.Code,
 						"Type":             lb.Type,
 						"Tags":             tagDesc.Tags,

@@ -40,6 +40,9 @@ module "database" {
   aws_vpc_id = local.aws_vpc_id
   aws_certificate_arn = local.aws_certificate_arn
   db_instance_address  = local.db_instance_address
+  db_name             = local.db_name
+  db_user             = local.db_user
+  db_password         = local.db_password
   robusta_signing_key     = local.robusta_signing_key
   robusta_account_id     = local.robusta_account_id
   robusta_sink_token     = local.robusta_sink_token
@@ -112,8 +115,8 @@ locals {
 
 locals {
   db_instance_address      = length(module.database) > 0 ? module.database[0].db_instance_address : ""
+  db_name                  = length(module.database) > 0 ? module.database[0].db_name : ""
+  db_user                  = length(module.database) > 0 ? module.database[0].db_user : ""
+  db_password              = length(module.database) > 0 ? module.database[0].db_password : ""
 }
 
-locals {
-  retrieve_creds      = length(module.gitops_bridge) > 0 ? module.gitops_bridge[0].retrieve_creds : ""
-}
