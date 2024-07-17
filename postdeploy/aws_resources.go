@@ -6,18 +6,17 @@ import (
 	"flag"
 	"fmt"
 	"os"
-	"strings"
+	
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
-	"github.com/aws/aws-sdk-go-v2/service/cloudwatch"
-	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
+	
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	ec2types "github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/aws/aws-sdk-go-v2/service/eks"
 	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2"
 	"github.com/aws/aws-sdk-go-v2/service/rds"
-	"github.com/aws/aws-sdk-go-v2/service/s3"
+	
 )
 
 type AWSPlugin struct {
@@ -87,12 +86,6 @@ func FetchAWSResourcesWithTag(workspace, region string) ([]ResourceInfo, error) 
 	}
 	resources = append(resources, rdsResources...)
 
-	s3Resources, err := fetchS3Resources(cfg, tagKey, tagValue)
-	if err != nil {
-		return nil, err
-	}
-	resources = append(resources, s3Resources...)
-
 	eksResources, err := fetchEKSResources(cfg, tagKey, tagValue)
 	if err != nil {
 		return nil, err
@@ -111,17 +104,7 @@ func FetchAWSResourcesWithTag(workspace, region string) ([]ResourceInfo, error) 
 	}
 	resources = append(resources, elbResources...)
 
-	dynamodbResources, err := fetchDynamoDBResources(cfg, tagKey, tagValue)
-	if err != nil {
-		return nil, err
-	}
-	resources = append(resources, dynamodbResources...)
-
-	cloudWatchResources, err := fetchCloudWatchResources(cfg, tagKey, tagValue)
-	if err != nil {
-		return nil, err
-	}
-	resources = append(resources, cloudWatchResources...)
+	
 
 	return resources, nil
 }
@@ -187,41 +170,7 @@ func fetchRDSResources(cfg aws.Config, tagKey, tagValue string) ([]ResourceInfo,
 	return resources, nil
 }
 
-func fetchS3Resources(cfg aws.Config, tagKey, tagValue string) ([]ResourceInfo, error) {
-	svc := s3.NewFromConfig(cfg)
 
-	result, err := svc.ListBuckets(context.TODO(), &s3.ListBucketsInput{})
-	if err != nil {
-		return nil, fmt.Errorf("failed to list S3 buckets: %v", err)
-	}
-
-	var resources []ResourceInfo
-	for _, bucket := range result.Buckets {
-		tagging, err := svc.GetBucketTagging(context.TODO(), &s3.GetBucketTaggingInput{
-			Bucket: bucket.Name,
-		})
-
-		if err != nil {
-			// If the bucket has no tags, skip it
-			if strings.Contains(err.Error(), "NoSuchTagSet") {
-				continue
-			}
-			return nil, fmt.Errorf("failed to get tags for bucket %s: %v", *bucket.Name, err)
-		}
-
-		for _, tag := range tagging.TagSet {
-			if *tag.Key == tagKey && *tag.Value == tagValue {
-				bucketInfo := map[string]interface{}{
-					"BucketName": *bucket.Name,
-					"Tags":       tagging.TagSet,
-				}
-				resources = append(resources, ResourceInfo{Service: "S3", Resource: bucketInfo})
-			}
-		}
-	}
-
-	return resources, nil
-}
 
 func fetchEKSResources(cfg aws.Config, tagKey, tagValue string) ([]ResourceInfo, error) {
 	svc := eks.NewFromConfig(cfg)
@@ -312,7 +261,6 @@ func fetchALBAndNLBResources(cfg aws.Config, tagKey, tagValue string) ([]Resourc
 				if *tag.Key == tagKey && *tag.Value == tagValue {
 					lbInfo := map[string]interface{}{
 						"LoadBalancerName": *lb.LoadBalancerName,
-						"DNSName":          *lb.DNSName,
 						"State":            lb.State.Code,
 						"Type":             lb.Type,
 						"Tags":             tagDesc.Tags,
@@ -326,69 +274,8 @@ func fetchALBAndNLBResources(cfg aws.Config, tagKey, tagValue string) ([]Resourc
 	return resources, nil
 }
 
-func fetchDynamoDBResources(cfg aws.Config, tagKey, tagValue string) ([]ResourceInfo, error) {
-	svc := dynamodb.NewFromConfig(cfg)
 
-	input := &dynamodb.ListTablesInput{}
 
-	result, err := svc.ListTables(context.TODO(), input)
-	if err != nil {
-		return nil, fmt.Errorf("failed to list DynamoDB tables: %v", err)
-	}
-
-	var resources []ResourceInfo
-	for _, tableName := range result.TableNames {
-		describeTableOutput, err := svc.DescribeTable(context.TODO(), &dynamodb.DescribeTableInput{
-			TableName: aws.String(tableName),
-		})
-		if err != nil {
-			return nil, fmt.Errorf("failed to describe DynamoDB table %s: %v", tableName, err)
-		}
-
-		tagsOutput, err := svc.ListTagsOfResource(context.TODO(), &dynamodb.ListTagsOfResourceInput{
-			ResourceArn: describeTableOutput.Table.TableArn,
-		})
-		if err != nil {
-			return nil, fmt.Errorf("failed to list tags for DynamoDB table %s: %v", tableName, err)
-		}
-
-		for _, tag := range tagsOutput.Tags {
-			if *tag.Key == tagKey && *tag.Value == tagValue {
-				tableInfo := map[string]interface{}{
-					"TableName": *describeTableOutput.Table.TableName,
-					"ItemCount": describeTableOutput.Table.ItemCount,
-					"TableStatus": describeTableOutput.Table.TableStatus,
-					"Tags": tagsOutput.Tags,
-				}
-				resources = append(resources, ResourceInfo{Service: "DynamoDB", Resource: tableInfo})
-			}
-		}
-	}
-
-	return resources, nil
-}
-
-func fetchCloudWatchResources(cfg aws.Config, tagKey, tagValue string) ([]ResourceInfo, error) {
-	svc := cloudwatch.NewFromConfig(cfg)
-
-	input := &cloudwatch.DescribeAlarmsInput{}
-
-	result, err := svc.DescribeAlarms(context.TODO(), input)
-	if err != nil {
-		return nil, fmt.Errorf("failed to describe CloudWatch alarms: %v", err)
-	}
-
-	var resources []ResourceInfo
-	for _, alarm := range result.MetricAlarms {
-		alarmInfo := map[string]interface{}{
-			"AlarmName":  *alarm.AlarmName,
-			"StateValue": alarm.StateValue,
-		}
-		resources = append(resources, ResourceInfo{Service: "CloudWatch", Resource: alarmInfo})
-	}
-
-	return resources, nil
-}
 
 func main() {
 	workspace := flag.String("workspace", "", "Workspace tag value to filter AWS resources")

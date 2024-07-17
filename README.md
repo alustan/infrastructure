@@ -32,7 +32,7 @@ The project architecture consists of the following main components:
 
 - Run `make deploy` to bootstrap a control cluster with other infrastructure
 
-- Run `make retrieve-creds` to retrieve relevant credentials and urls from control cluster
+- Run `make retrieve-creds` to retrieve relevant credentials and urls from cluster
 
 - Run `make destroy` to destroy provisioned infrastructure
 

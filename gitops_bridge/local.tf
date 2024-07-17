@@ -43,6 +43,9 @@ locals {
       external_dns_domain_filters = "[${var.domain_name}]"
       aws_certificate_arn         =  var.aws_certificate_arn
       db_instance_address         = var.db_instance_address
+      db_name                     = var.db_name
+      db_user                     = var.db_user
+      db_password                 = var.db_password
       service_account_role_arn    =  var.service_account_role_arn
       container_registry_secret   = var.container_registry_secret
 
