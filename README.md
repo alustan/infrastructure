@@ -81,5 +81,5 @@ The project architecture consists of the following main components:
 
 
 
-**Alustan:** focuses on building tools and platforms that ensures right implementation of devops principles
+
 
