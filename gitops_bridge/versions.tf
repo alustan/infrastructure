@@ -74,4 +74,6 @@ provider "kubernetes" {
 }
 
 
+# For in-cluster installation
 
+# provider "kubernetes" {} is left empty, authentication to be handled by controller service account
