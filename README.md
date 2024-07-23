@@ -24,6 +24,8 @@ The project architecture consists of the following main components:
 
 > **The relevant metadata needed by the addons are automatically sourced from the `argod cluster secret`**
 
+> **The relevant cloud resource metadata needed by `alustan service-controller` are automatically sourced from the `alustan cluster secret`**
+
 ## setup
 
 - Run `make setup` to install and configure all needed dependencies. 

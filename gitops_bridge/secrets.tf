@@ -49,3 +49,26 @@ resource "kubernetes_secret_v1" "cluster" {
   depends_on = [helm_release.argocd]
 }
 
+
+resource "kubernetes_namespace" "alustan" {
+ metadata {
+    name = "alustan"
+  }
+}
+
+
+
+resource "kubernetes_secret_v1" "cluster_alustan" {
+
+ metadata {
+    name        = "in-cluster-alustan"
+    namespace   = "alustan"
+    annotations = local.argocd_annotations
+    labels      = local.argocd_labels
+  }
+  data = {}
+
+  
+depends_on = [kubernetes_namespace.alustan]
+}
+

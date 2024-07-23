@@ -115,6 +115,27 @@ locals {
  
 }
 
+locals {
+ 
+  alustan_labels = merge({
+    cluster_name                     = "in-cluster"
+    environment                      = local.environment
+   "alustan.io/secret-type"  = "cluster"
+    
+    }
+   
+  )
+
+  alustan_annotations = merge(
+    {
+      cluster_name = "in-cluster"
+      environment  = local.environment
+    },
+    try(local.cluster_metadata, {})
+  )
+
+}
+
 
 
 
