@@ -63,8 +63,8 @@ resource "kubernetes_secret_v1" "cluster_alustan" {
  metadata {
     name        = "in-cluster-alustan"
     namespace   = "alustan"
-    annotations = local.argocd_annotations
-    labels      = local.argocd_labels
+    annotations = local.alustan_annotations
+    labels      = local.alustan_labels
   }
   data = {}
 
