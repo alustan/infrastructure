@@ -95,7 +95,7 @@ variable "addons_git_repo" {
 variable "workload_git_repo" {
   description = "name of Git repository"
   type        = string
-  default = "manifests"
+  default = "cluster-manifests"
 }
 
 variable "addons_repo_path" {
