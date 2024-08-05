@@ -1,4 +1,3 @@
-
 variable "blueprint_gitops_metadata" {
   description = "blueprint gitops metadata"
   type        = any
